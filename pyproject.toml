@@ -52,7 +52,6 @@ dependencies = [
     "torchdiffeq",
     "tqdm",
     "lingua-language-detector",
-    "WeTextProcessing",
 ]
 
 [project.optional-dependencies]
@@ -60,6 +59,7 @@ full = [
     "accelerate>=1.12.0",
     "tensorboard>=2.20.0",
     "ruff>=0.15.12",
+    "WeTextProcessing",
 ]
 
 [project.scripts]
