@@ -35,7 +35,7 @@ def get_chinese_text_normalizer() -> Optional[_Normalizer]:
 def get_english_text_normalizer() -> Optional[_Normalizer]:
     if callable(EnNormalizer):
         return EnNormalizer()
-    return None:
+    return None
 
 
 @lru_cache(maxsize=1)
