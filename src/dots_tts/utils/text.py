@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from functools import lru_cache
-from typing import Literal, Optional
+from typing import Literal, Optional, Protocol
 
 from langcodes import Language as LangcodesLanguage
 from lingua import Language, LanguageDetectorBuilder
@@ -114,7 +114,7 @@ def detect_text_language(text: str) -> TextLanguage:
     return "unknown"
 
 
-def _normalize_with(normalizer, text: str) -> str:
+def _normalize_with(normalizer: Optional[_Normalizer], text: str) -> str:
     if normalizer is None:
         return text
     normalized = normalizer.normalize(text)
