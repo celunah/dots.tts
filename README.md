@@ -121,11 +121,13 @@ Common flags:
 |------|-------------|---------|
 | `--num-steps` | Flow-matching sampling steps (higher = better quality, lower = faster) | `10` |
 | `--guidance-scale` | CFG scale (flow-matching only; MeanFlow has CFG fused into the student; values > 2 progressively amplify audio energy) | `1.2` |
-| `--normalize-text` | Apply text normalization before inference (via [WeTextProcessing](https://github.com/wenet-e2e/WeTextProcessing)) | off |
+| `--normalize-text` | Apply text normalization before inference (via [WeTextProcessing](https://github.com/wenet-e2e/WeTextProcessing)) (optional) | off |
 | `--language` | Add an explicit language tag to the input text; accepts `none`, `auto_detect`, language codes such as `EN` / `ZH`, or names such as `english` / `chinese` | `none` |
 | `--seed` | RNG seed (fixed seed → deterministic output) | `42` |
 
 `dots.tts --help` lists the full set.
+
+`--normalize-text` is now an optional parameter, and if [WeTextProcessing](https://github.com/wenet-e2e/WeTextProcessing) isn't installed, it becomes a no-op.
 
 Notes:
 
