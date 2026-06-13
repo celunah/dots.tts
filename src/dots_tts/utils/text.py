@@ -2,26 +2,40 @@ from __future__ import annotations
 
 import re
 from functools import lru_cache
-from typing import Literal
+from typing import Literal, Optional
 
 from langcodes import Language as LangcodesLanguage
 from lingua import Language, LanguageDetectorBuilder
-from tn.chinese.normalizer import Normalizer as ZhNormalizer
-from tn.english.normalizer import Normalizer as EnNormalizer
+
+try:
+    from tn.chinese.normalizer import Normalizer as ZhNormalizer
+    from tn.english.normalizer import Normalizer as EnNormalizer
+except ModuleNotFoundError:
+    ZhNormalizer = None
+    EnNormalizer = None 
 
 TextLanguage = Literal["zh", "en", "unknown"]
 
 _WHITESPACE_PATTERN = re.compile(r"\s+")
 
 
-@lru_cache(maxsize=1)
-def get_chinese_text_normalizer() -> ZhNormalizer:
-    return ZhNormalizer()
+class _Normalizer(Protocol):
+    def normalize(self, text: str) -> str:
+        raise NotImplementedError("protocol not defined")
 
 
 @lru_cache(maxsize=1)
-def get_english_text_normalizer() -> EnNormalizer:
-    return EnNormalizer()
+def get_chinese_text_normalizer() -> Optional[_Normalizer]:
+    if callable(ZhNormalizer):
+        return ZhNormalizer()
+    return None
+
+
+@lru_cache(maxsize=1)
+def get_english_text_normalizer() -> Optional[_Normalizer]:
+    if callable(EnNormalizer):
+        return EnNormalizer()
+    return None:
 
 
 @lru_cache(maxsize=1)
@@ -101,6 +115,8 @@ def detect_text_language(text: str) -> TextLanguage:
 
 
 def _normalize_with(normalizer, text: str) -> str:
+    if normalizer is None:
+        return text
     normalized = normalizer.normalize(text)
     return _WHITESPACE_PATTERN.sub(" ", normalized).strip()
 
